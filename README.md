@@ -2,6 +2,7 @@
 
 steps
 1. npm install
+npm install ts-node --save-dev
 2. add the database.json
 how by adding the below
 {

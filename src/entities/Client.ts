@@ -31,7 +31,7 @@ export class Client extends BaseEntity {
     @UpdateDateColumn()
     updated_at!: Date;
 
-
+  
     @ManyToOne(() => Role, role => role.clients, { onDelete: "RESTRICT", onUpdate: "CASCADE" })
     @JoinColumn({ name: 'role_id' })
     role!: Role;
