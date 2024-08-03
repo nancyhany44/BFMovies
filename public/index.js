@@ -1,4 +1,5 @@
 "use strict";
+<<<<<<< Updated upstream
 Object.defineProperty(exports, "__esModule", { value: true });
 const pg_1 = require("pg");
 const dotenv_1 = require("dotenv");
@@ -23,3 +24,42 @@ pool.connect()
     });
 })
     .catch((err) => console.error('Error connecting to database', err.stack));
+=======
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeorm_1 = require("typeorm");
+const Client_1 = require("./entities/Client");
+const Role_1 = require("./entities/Role");
+const express_1 = __importDefault(require("express"));
+const create_user_1 = require("./routes/create_user");
+const create_role_1 = require("./routes/create_role");
+const delete_client_1 = require("./routes/delete_client");
+const fetch_users_1 = require("./routes/fetch_users");
+const app = (0, express_1.default)();
+const main = async () => {
+    try {
+        const connection = await (0, typeorm_1.createConnection)({
+            type: "postgres",
+            host: "localhost",
+            port: 5432,
+            username: "postgres",
+            password: "",
+            database: "bfmovies",
+            entities: [Client_1.Client, Role_1.Role],
+            synchronize: true
+        });
+        app.use(express_1.default.json());
+        app.use(create_user_1.createClientRouter);
+        app.use(create_role_1.createRoleRouter);
+        app.use(delete_client_1.deleteClientRouter);
+        app.use(fetch_users_1.fetchUsersRouter);
+        app.listen(3000, () => {
+        });
+    }
+    catch (error) {
+    }
+};
+main();
+>>>>>>> Stashed changes
