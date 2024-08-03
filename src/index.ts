@@ -1,12 +1,11 @@
 import {createConnection } from "typeorm";
 import { Client } from "./entities/Client";
-import { Role } from "./entities/Role";
 import express from "express";
 import { createClientRouter } from "./routes/create_user";
 import { createRoleRouter } from "./routes/create_role";
 import { deleteClientRouter } from "./routes/delete_client";
 import { fetchUsersRouter } from "./routes/fetch_users";
-
+import { Role } from "./entities/Role";
 const app = express();
 const main = async() =>{
     try{

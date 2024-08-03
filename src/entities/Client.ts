@@ -1,6 +1,5 @@
 import { Entity, Column, BeforeInsert, BeforeUpdate, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, PrimaryColumn, BaseEntity} from "typeorm";
 import * as bcrypt from "bcrypt";
-import { Person } from "../utils/Person";
 import { Role } from "./Role";
 @Entity('users')
 export class Client extends BaseEntity {
@@ -31,7 +30,7 @@ export class Client extends BaseEntity {
     @UpdateDateColumn()
     updated_at!: Date;
 
-  
+
     @ManyToOne(() => Role, role => role.clients, { onDelete: "RESTRICT", onUpdate: "CASCADE" })
     @JoinColumn({ name: 'role_id' })
     role!: Role;
