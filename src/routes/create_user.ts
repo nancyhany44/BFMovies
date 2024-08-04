@@ -1,29 +1,31 @@
 import express from "express"
-import { Client } from "../entities/Client";
+import { Users } from "../entities/Users";
 const router = express.Router();
 
-router.post('/api/client', async(req,res)=>{
-    const {
-        user_id,
-        username,
-        name,
-        password
-        
-    } = req.body;
-    const clientFind = await Client.findOne({ where: { user_id } });
-    const clientFind1 = await Client.findOne({ where: { username } });
-
-    if (clientFind1){
+router.post('/api/users', async(req,res)=>{
+    const {username,name,email,password} = req.body;
+    const userNameExists = await Users.findOne({ where: { username } });
+        if (!username || !name || !email || !password) {
+            return res.status(400).json({
+                message: "Error"
+            });
+        }
+    if (userNameExists){
         return res.json({
             message:" Error"
         })
     }
-    if(!clientFind){     //check input sanitization
-        
-   const client = Client.create({
-    user_id,
+        //check input sanitization
+    const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.json({
+            message: "Error"
+        });
+    }
+   const client = Users.create({
     username,
     name,
+    email,
     password
    });
   
@@ -31,13 +33,7 @@ router.post('/api/client', async(req,res)=>{
 await client.save();
 return res.json({
     message: "OK"
-});
-    }
-    else{
-        return res.json({
-            message:" Error"
-        })
-    }
+}); 
 });
 
 export {

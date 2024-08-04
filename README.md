@@ -3,17 +3,14 @@
 steps
 1. npm install
 npm install ts-node --save-dev
-2. add the database.json
-how by adding the below
-{
-  "dev": {
-    "driver": "pg",
-    "user": "postgres",
-    "password": <password>,
-    "host": "localhost",
-    "database": "bfmovies"
-  }
-}
+2. add the .env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=bfmovies
+DB_USER=user
+DB_PASSWORD= ""
+
+---or IN example.env: just remove the example word and keep it .env only
 
 3. to genertae migration 
   npm run typeorm migration:generate -- -d src/data-source.ts src/migration/name //(put whatever name you want instead of word name)

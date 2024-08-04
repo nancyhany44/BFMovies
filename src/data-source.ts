@@ -1,15 +1,16 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Client } from "./entities/Client";
-import { error } from "console";
-import { Role } from "./entities/Role";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export const AppDataSource = new DataSource({
     type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "", 
-    database: "bfmovies",
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT!, 10),
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     synchronize: false, 
     logging: false,
     entities: ["src/entities/**/*.ts"], 
