@@ -27,9 +27,7 @@ export class Users extends BaseEntity {
   @IsNotEmpty()
   name!: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column({ unique: true })
   @IsEmail()
   email!: string;
 
@@ -44,6 +42,7 @@ export class Users extends BaseEntity {
       this.password = await bcrypt.hash(this.password, 10);
     }
   }
+
   @CreateDateColumn()
   created_at!: Date;
 

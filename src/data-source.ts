@@ -1,17 +1,17 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { User } from "./entity/User"
+
 
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,
-    username: "test",
-    password: "test",
-    database: "test",
-    synchronize: true,
+    username: "postgres",
+    password: "n123",
+    database: "bfmovies",
+    synchronize: false,
     logging: false,
-    entities: [User],
-    migrations: [],
+    entities: ['src/entities/**/*.ts'],
+    migrations: ['src/migration/**/*.ts'],
     subscribers: [],
 })
