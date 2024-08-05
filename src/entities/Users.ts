@@ -51,9 +51,10 @@ export class Users extends BaseEntity {
   updated_at!: Date;
 
   @ManyToOne(() => Role, (role) => role.users, {
-    onDelete: 'RESTRICT',
+    nullable: true,
     onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'role_id' })
-  role!: Role;
+  role!: Role | null;
 }
