@@ -1,29 +1,24 @@
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany} from "typeorm";
-import { Client } from "./Client";
-
-export enum RoleTypes{
-    ADMIN = 'admin',
-    USER = 'user',
-    TEST = 'test'
-}
-
+import {
+  Entity,
+  Column,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
+import { Users } from './Users';
+import { RoleEnum, Constants } from '../enums/RoleEnum';
 
 @Entity('role')
 export class Role extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    role_id!: Number
+  @PrimaryGeneratedColumn('uuid')
+  role_id!: string;
 
-   @Column({
-    type: "enum",
-    enum: RoleTypes
-   })
-   role!: RoleTypes
+  @Column({
+    type: 'enum',
+    enum: RoleEnum,
+  })
+  role!: RoleEnum;
 
-
-   @OneToMany(() => Client, client => client.role)
-   clients!: Client[];
-
+  @OneToMany(() => Users, (user) => user.role)
+  users!: Users[];
 }
-  
-
-
