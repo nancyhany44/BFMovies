@@ -1,11 +1,11 @@
 import express from 'express';
+import { AppDataSource } from './data-source';
+import { authRoutes } from './routes/authRoutes';
 import { createClientRouter } from './routes/create_user';
 import { createRoleRouter } from './routes/create_role';
 import { deleteClientRouter } from './routes/delete_user';
 import { fetchUsersRouter } from './routes/fetch_users';
 import { updateUserRouter } from './routes/update_user';
-import { AppDataSource } from './data-source';
-import { authRoutes } from './routes/authRoutes';
 
 const app = express();
 

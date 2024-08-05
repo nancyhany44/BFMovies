@@ -19,6 +19,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "class-validator": "^0.14.1",
     "express": "^4.19.2",
