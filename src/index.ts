@@ -1,35 +1,20 @@
-import {createConnection } from "typeorm";
-import { Client } from "./entities/Client";
-import express from "express";
-import { createClientRouter } from "./routes/create_user";
-import { createRoleRouter } from "./routes/create_role";
-import { deleteClientRouter } from "./routes/delete_client";
-import { fetchUsersRouter } from "./routes/fetch_users";
-import { Role } from "./entities/Role";
-const app = express();
-const main = async() =>{
-    try{
-    const connection = await createConnection({
-        type: "postgres",
-        host: "localhost",
-        port: 5432,
-        username: "postgres",
-        password: "",
-        database: "bfmovies",
-        entities: [Client, Role],
-        synchronize: true
-       
+import { AppDataSource } from "./data-source"
+import { User } from "./entity/User"
 
-    })
-    app.use(express.json());
-    app.use(createClientRouter);
-    app.use(createRoleRouter);
-    app.use(deleteClientRouter);
-    app.use(fetchUsersRouter);
-    app.listen(3000, ()=>{
-    });
-}catch(error){
-}
-}
+AppDataSource.initialize().then(async () => {
 
-main();
+    console.log("Inserting a new user into the database...")
+    const user = new User()
+    user.firstName = "Timber"
+    user.lastName = "Saw"
+    user.age = 25
+    await AppDataSource.manager.save(user)
+    console.log("Saved a new user with id: " + user.id)
+
+    console.log("Loading users from the database...")
+    const users = await AppDataSource.manager.find(User)
+    console.log("Loaded users: ", users)
+
+    console.log("Here you can setup and run express / fastify / any other framework.")
+
+}).catch(error => console.log(error))
