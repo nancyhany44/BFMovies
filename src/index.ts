@@ -1,10 +1,15 @@
 import express from 'express';
-import { createClientRouter } from './routes/create_user';
-import { createRoleRouter } from './routes/create_role';
-import { deleteClientRouter } from './routes/delete_user';
-import { fetchUsersRouter } from './routes/fetch_users';
+import { createClientRouter } from './routes/users/create_user';
+import { createRoleRouter } from './routes/role/create_role';
+import { deleteClientRouter } from './routes/users/delete_user';
+import { fetchUsersRouter } from './routes/users/fetch_users';
 import { AppDataSource } from './data-source';
-import { updateUserRouter } from './routes/update_user';
+import { updateUserRouter } from './routes/users/update_user';
+import { fetchRoleRouter } from './routes/role/read_role';
+import { updateRoleRouter } from './routes/role/update_role';
+import { deleteRoleRouter } from './routes/role/delete_role';
+import { fetchUserByID } from './routes/role/viewRoleforcurrentUser';
+import { fetchCurentUserByID } from './routes/users/fetch_Current_User';
 const app = express();
 const main = async () => {
   await AppDataSource.initialize();
@@ -14,6 +19,11 @@ const main = async () => {
   app.use(deleteClientRouter);
   app.use(fetchUsersRouter);
   app.use(updateUserRouter);
+  app.use(fetchRoleRouter);
+  app.use(updateRoleRouter);
+  app.use(deleteRoleRouter);
+  app.use(fetchUserByID);
+  app.use(fetchCurentUserByID);
   app.listen(3000, () => {});
 };
 main();
