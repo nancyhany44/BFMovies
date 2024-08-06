@@ -7,7 +7,8 @@ import {
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
-const SECRET_KEY = 'be610a5244a1f6b8d9e53040a918a6116157c48b14f1805a71d37cf78d667a417514d742c28bba70e31d2e883ed749b45e0a7417f9ceddbbe2afa0a46fb72b43ad3b4702e4fd2e700c7d9433890336fe8a52d67e3ebd71f56f319b9d57f544c80e89796410181b899920bd8fe1e3a73ecb531bad385f1b4c23745efb3e65d81d551319eb7d88c075b0dda66227fe587ebcd32ff0449dab86d3796430adb4fd29f6ed15e972e1b68156e1ec8f42ad7dc6109cc983c1aecec05a281a226bc7f5906d9972e7b3edd687188f978e8324a53f8b6c37c4b12e8ee2e91c98aca59dd0043a7e3d7c216ff494db71f5deadf2b8f1f8ffde57d7d68da551c24ec4a6d7e5be'; // Replace with your actual secret key
+
+const SECRET_KEY = '35cdf753a36e4025830b5324ac0511bef368b6cccb72fa5adde941fccbea3157bdafaa99f1809b40efa659d9b24ef25013e8e1964f34a172f2f4d0612d86466c07f3875c24571ae528cf747894cfb18d030737e47b922057935e4f7f84c1fb0ef08aac304b0be8393ff1921d7ee52454e0e887fdbc956d9074666fa05fa5a54b6048d92b5a3e70de602317e2f3861c0c7d4bab38bd3c83eaa3dd9d1db9a61674c033efc2bfa3b77419957daf8da82d41601586ba7618ca0a4ced61e04e32035cd56b69e412cfdc1c7635179ad6516ba0d13e7da61f9417ce0dca9494d83732fd504e8d580fab9e57991872fa35a82f3d28e943ff0a70aa6c7d9a9e5e44e3697d'; // Replace with your actual secret key
 
 
 export class UserService {
@@ -74,11 +75,10 @@ export class UserService {
     await user.save();
 
     const token = jwt.sign({ userId: user.user_id }, SECRET_KEY, { expiresIn: '1h' });
-    
-    // Log the token for verification
+ 
     console.log('JWT:', token);
     
-    // Verify the token immediately after creation
+
     const verifiedToken = UserService.verifyToken(token);
     console.log('Verified Token:', verifiedToken);
 
@@ -158,7 +158,3 @@ export class UserService {
     }
   }
 }
-
-
-
-
