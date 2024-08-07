@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Users } from './Users';
-import { RoleEnum, Constants } from '../enums/RoleEnum';
+import { RoleEnum } from '../enums/RoleEnum';
 
 @Entity('role')
 export class Role extends BaseEntity {

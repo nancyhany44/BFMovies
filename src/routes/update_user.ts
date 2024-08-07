@@ -1,7 +1,8 @@
 import express from 'express';
 import { Users } from '../entities/Users';
 import { validate as isUUID } from 'uuid';
-import * as bcrypt from 'bcrypt';
+import argon2 from 'argon2';
+
 const router = express.Router();
 
 router.put('/api/users/:user_id', async (req, res) => {
@@ -44,13 +45,12 @@ router.put('/api/users/:user_id', async (req, res) => {
   }
 
   if (password) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user.password = hashedPassword;
+    user.password = await argon2.hash(password);
   }
 
   await user.save();
 
-  return res.json({ message: 'OK' });
+  return res.json(user);
 });
 
 export { router as updateUserRouter };
