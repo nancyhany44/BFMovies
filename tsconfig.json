@@ -1,18 +1,18 @@
 {
-   "compilerOptions": {
-     "lib": [
-      "es6", "es7",
-       "dom"
-     ],
-     "target": "es6",
-     "module": "commonjs",
-     "moduleResolution": "node",
-     "outDir": "./build",
-     "emitDecoratorMetadata": true,
-     "experimentalDecorators": true,
-     "sourceMap": true, 
-     "esModuleInterop": true,
-     "allowSyntheticDefaultImports": true
-   }
- }
- 
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "target": "ESNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
+}

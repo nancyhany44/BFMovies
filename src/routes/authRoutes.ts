@@ -1,61 +1,51 @@
-import express, { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { Users } from '../entities/Users';
+import express from 'express';
+import cors from 'cors';
+import { UserService } from '../Service-layer/UserService';
+import { ValidationError, NotFoundError } from '../errors/Errors';
 
 const router = express.Router();
+const app = express();
+const port = process.env.API_PORT || 4444;
 
-const validateEmail = (email: string) => {
-  const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
-  return emailRegex.test(email);
-};
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-router.post('/register', async (req: Request, res: Response) => {
-  const { username, name, email, password } = req.body;
-
-  // Input validation
-  if (!username || !name || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-
-  if (!validateEmail(email)) {
-    return res.status(400).json({ message: 'Invalid email format' });
-  }
-
+// Register API endpoint
+router.post('/register', async (req, res) => {
   try {
-    const userRepository = getRepository(Users);
-
-    // Check if username already exists
-    const userNameExists = await userRepository.findOne({ where: { username } });
-    if (userNameExists) {
-      return res.status(400).json({ message: 'Username already exists' });
-    }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create new user
-    const newUser = userRepository.create({
-      username,
-      name,
-      email,
-      password: hashedPassword,
+    const { username, name, email, password } = req.body;
+    const { user, token } = await UserService.createUser(username, name, email, password);
+    
+    return res.status(200).json({
+      message: 'OK',
+      user,
+      token,
     });
-
-    await userRepository.save(newUser);
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: newUser.user_id, username: newUser.username },
-      process.env.JWT_SECRET as jwt.Secret,
-      { expiresIn: '1h' }
-    );
-
-    return res.status(201).json({ message: 'User registered successfully', token });
   } catch (error) {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({
+      message: 'Error',
+      error: error.message,
+    });
   }
 });
 
-export { router as authRoutes };
+// Login API endpoint
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const { user, token } = await UserService.loginUser(email, password);
+    res.status(200).send({ user, token });
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof NotFoundError) {
+      res.status(401).send({ error: error.message });
+    } else {
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
+  }
+});
+
+// Other endpoints can be added here
+
+// Export the router
+export { router as authRouter };

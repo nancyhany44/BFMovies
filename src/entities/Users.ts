@@ -1,18 +1,7 @@
-import {
-  Entity,
-  Column,
-  BeforeInsert,
-  BeforeUpdate,
-  CreateDateColumn,
-  UpdateDateColumn,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-} from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { Entity, Column, BeforeInsert, BeforeUpdate, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
 import { Role } from './Role';
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class Users extends BaseEntity {
@@ -38,8 +27,9 @@ export class Users extends BaseEntity {
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
-    if (this.password) {
-      this.password = await bcrypt.hash(this.password, 10);
+    if (this.password && !this.password.startsWith('$2b$')) { 
+      const saltRounds = 10;
+      this.password = await bcrypt.hash(this.password, saltRounds);
     }
   }
 
