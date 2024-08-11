@@ -1,7 +1,6 @@
 import express from 'express';
-import { Users } from '../entities/Users';
 import { validate as isUUID } from 'uuid';
-
+import { UserService } from '../../Service-layer/UserService';
 const router = express.Router();
 
 router.delete('/api/users/:user_id', async (req, res) => {
@@ -10,14 +9,17 @@ router.delete('/api/users/:user_id', async (req, res) => {
   if (!isUUID(user_id)) {
     return res.json({ message: 'Error' });
   }
-  const response = await Users.delete(user_id);
-  if (response.affected === 0) {
-    return res.json({ message: 'Error' });
-  }
+  try {
+    await UserService.deleteUser(user_id);
 
-  return res.json({
-    message: 'Done',
-  });
+    return res.status(200).json({
+      message: 'Done',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error',
+    });
+  }
 });
 
 export { router as deleteClientRouter };
